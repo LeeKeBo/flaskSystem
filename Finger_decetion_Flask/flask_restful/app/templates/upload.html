@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+{{ super() }}
+<div>
+    <div>
+        <form method="POST" action="http://localhost:5000/detection" enctype="multipart/form-data">
+        <input type="file" size="30" name="img"/>
+        <br>
+        <input type="submit" value="提交信息" class="button-new" style="margin-top:15px;"/>
+        </form>
+    </div>
+    <style>
+    body{ text-align:center}
+    .div{ margin:0 auto; width:400px; height:100px; border:1px solid #F00}
+    </style>
+    <div>
+        {% if result_img %}
+        {{new_filename}}结果子图：
+        <div><img src ="{{ url_for('static', filename= result_img) }}" width="200" height="200" alt="你的图片被外星人劫持了～～"/></div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
