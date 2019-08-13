@@ -1,5 +1,6 @@
 from flask import render_template, session, redirect, url_for, current_app, request, jsonify, make_response
 from werkzeug.utils import secure_filename
+from flask_login import login_user, logout_user, login_required
 from . import main
 from .. import db
 import os
@@ -14,7 +15,8 @@ def allowed_file(filename):
 
 # 上传文件
 @main.route('/detection/', methods=['GET', 'POST'], strict_slashes=False)
-def api_upload():
+@login_required
+def detection():
     if request.method == 'GET':
         return render_template('upload.html')
     else:
@@ -38,15 +40,10 @@ def api_upload():
             return jsonify({"code": 1001, "errmsg": "上传失败"})
 
 
-#
-@main.route('/', methods=['GET'])
-def base():
-    return render_template('base.html')
-
-
-@main.route('/index/')
+@main.route('/', )
+@main.route('/index/', )
 def index():
-    pass
+    return render_template('index.html', )
 
 
 @main.route('/user/')

@@ -25,7 +25,7 @@ class Role(db.Model):
     users = db.relationship('User', backref='role', lazy='dynamic')
 
     def __init__(self, **kwargs):
-        super(User, self).__init__(**kwargs)
+        super(Role, self).__init__(**kwargs)
         if self.permissions is None:
             self.permissions = 0
 
@@ -65,7 +65,7 @@ class Role(db.Model):
         db.session.commit()
 
     def __repr__(self):
-        return '<User %r>' % (self.name)
+        return '<Role %r>' % (self.name)
 
 
 class User(UserMixin, db.Model):
@@ -96,8 +96,10 @@ class Picture(db.Model):
     __tablename__ = 'pictures'
     id = db.Column(db.Integer, primary_key=True)
     pic_name = db.Column(db.String(120))
+    pic_id = db.Column(db.Integer)
     timestamp = db.Column(db.DateTime)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # 表名.id
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))  # 表名.id
 
     def __repr__(self):
         return '<Post %r>' % (self.body)
+
