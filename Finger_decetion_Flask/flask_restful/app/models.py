@@ -1,6 +1,9 @@
 from app import db
-from flask_login import UserMixin
+from .exceptions import ValidationError
+from flask_login import UserMixin, AnonymousUserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask import current_app, url_for
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from . import login_manager
 
 
@@ -77,6 +80,32 @@ class User(UserMixin, db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     picture = db.relationship('Picture', backref='user', lazy='dynamic')
 
+    # 定义默认用户角色
+    def __init__(self, **kwargs):
+        super(User, self).__init__(**kwargs)
+        if self.role is None:
+            if self.email == current_app.config['FLASKY_ADMIN']:
+                self.role = Role.query.filter_by(name='Administrator').first()
+            if self.role is None:
+                self.role = Role.query.filter_by(default=True).first()
+
+    # 权限控制
+    def can(self, perm):
+        return self.role is not None and self.role.hao_permission(perm)
+
+    def is_administrator(self):
+        return self.can(Permission.ADMIN)
+
+    # 序列化json
+    def to_json(self):
+        json_user = {
+            'url': url_for('api.get_user', id=self.id),
+            'nickname': self.nickname,
+            'pic_count': self.picture.count(),
+        }
+        return json_user
+
+    # 密码属性
     @property
     def password(self):
         raise AttributeError('password is not a readable attribute!')
@@ -88,17 +117,58 @@ class User(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    # 支持令牌的身份验证
+    def generate_auth_token(self, expiration):
+        s = Serializer(current_app.config['SECRET_KEY'], expires_in=expiration)
+        return s.dumps({'id': self.id}).edcode('utf-8')
+
+    @staticmethod
+    def verify_auth_token(token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return None
+        return User.query.get(data['id'])
+
     def __repr__(self):
         return '<User %r>' % (self.nickname)
+
+
+# 为了can方法和is_administrator方法使用方便
+class AnonymousUser(AnonymousUserMixin):
+    def can(self, permission):
+        return False
+
+    def is_administrator(self):
+        return False
 
 
 class Picture(db.Model):
     __tablename__ = 'pictures'
     id = db.Column(db.Integer, primary_key=True)
     pic_name = db.Column(db.String(120))
-    pic_id = db.Column(db.Integer)
+    pic_id = db.Column(db.Integer)  # 待删除，用来检测数据库迁移
     timestamp = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))  # 表名.id
+
+    # 序列化为json格式字典
+    def to_json(self):
+        json_pic = {
+            'url': url_for('api.get_pic', id=self.id),
+            'user_url': url_for('api.get_user', id=self.user_id),
+            'pic_name': self.pic_name,
+        }
+        return json_pic
+
+    # 反序列化
+    @staticmethod
+    def from_json(json_pic):
+        # 关靠名字可能没什么用，改
+        pic_name = json_pic.get('pic_name')
+        if pic_name is None or pic_name == '':
+            raise ValidationError('dose not have picture name')
+        return Picture(pic_name=pic_name)
 
     def __repr__(self):
         return '<Post %r>' % (self.body)
