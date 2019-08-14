@@ -1,3 +1,16 @@
+/*
+ * @Description: 登录页js
+ * @Author:lkb
+ * @Date: 2019-08-09 17:37:03
+ * @LastEditTime: 2019-08-14 19:57:44
+ * @LastEditors: Please set LastEditors
+ */
+
+/**
+ * @description: 判断全填写以及查询数据库是否匹配
+ * @param {type} 
+ * @return: 
+ */ 
 var login2 = function () {
     var username = document.getElementById("username");
     var pass = document.getElementById("password");

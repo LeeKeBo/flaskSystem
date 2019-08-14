@@ -1,4 +1,11 @@
-from hello import User,db
+'''
+@Description: 数据库功能测试
+@Author: lkb
+@Date: 2019-08-07 14:10:50
+@LastEditTime: 2019-08-14 19:53:44
+@LastEditors: 
+'''
+from dbModel import User,db
 from sqlalchemy.sql import func
 db.create_all()
 # db.drop_all()

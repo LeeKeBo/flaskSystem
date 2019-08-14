@@ -1,3 +1,11 @@
+'''
+@Description: 数据库类
+@Author: lkb
+@Date: 2019-08-07 14:07:10
+@LastEditTime: 2019-08-14 19:52:07
+@LastEditors: 
+'''
+
 from config import app
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy(app)

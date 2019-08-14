@@ -1,14 +1,17 @@
-from hello import User, db
+'''
+@Description: 数据库函数文件
+@Author: lkb
+@Date: 2019-08-08 15:19:05
+@LastEditTime: 2019-08-14 19:56:21
+@LastEditors: 
+'''
+from dbModel import User, db
 
-# 注册
-def loginIn(data):
-    newUser = User(name=data['data'], password=data['password'],
-                   role_id=data['role_id'])
-    db.session.add(newUser)
-    db.session.commit()
-    
-
-# 查询用户名与密码是否匹配
+'''
+@description: 查询用户名与密码是否匹配
+@param {type} 
+@return: True or False
+'''
 def canLogin(data):
     user = User.query.filter(User.name == data['username'], User.password == data['password']).all()
     print(user)
@@ -16,12 +19,22 @@ def canLogin(data):
         return True
     return False
 
+'''
+@description: 判断是否能注册
+@param {type} 
+@return: True or False
+'''    
 def canRegist(data):
     user = User.query.filter(User.name == data['username']).all()
     if user:
         return False
     return True
 
+'''
+@description: 注册，数据库操作，并查询是否成功插入数据库
+@param {type} 
+@return: True or False
+'''
 def regist(data):
     print(data)
     db.session.add(User(name = data['username'],password = data['password']))

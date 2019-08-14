@@ -1,14 +1,23 @@
+/*
+ * @Description: 注册页js
+ * @Author: lkb
+ * @Date: 2019-08-13 12:24:15
+ * @LastEditTime: 2019-08-14 19:59:20
+ * @LastEditors: 
+ */
+
+
+/**
+ * @description: 注册，判断全填写和长度限制，数据库查询是否有重名，注册
+ * @param {type} 
+ * @return: 
+ */
 function regist() {
     // var role_id = $('#role_id').val().trim(),
     var username = $('#username').val().trim(),
         pass1 = $("#password").val().trim(),
         pass2 = $('#check_password').val().trim();
     var allHaveInput = true;
-
-    // if (role_id.length === 0) {
-    //     $("#role_id").attr('placeholder', "这里还没有输入")
-    //     allHaveInput = false;
-    // }
     if (username.length === 0) {
         $("#username").attr('placeholder', "这里还没有输入")
         allHaveInput = false;

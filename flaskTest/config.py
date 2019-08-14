@@ -1,3 +1,10 @@
+'''
+@Description: 配置页
+@Author: lkb
+@Date: 2019-08-10 14:13:26
+@LastEditTime: 2019-08-14 19:51:08
+@LastEditors: 
+'''
 from flask import Flask
 app = Flask(__name__)
 

@@ -1,3 +1,10 @@
+'''
+@Description: 主页
+@Author: lkb
+@Date: 2019-08-08 14:48:10
+@LastEditTime: 2019-08-14 19:51:25
+@LastEditors: Please set LastEditors
+'''
 from flask import render_template, request, session, redirect, url_for, make_response
 from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
@@ -10,7 +17,11 @@ from config import app
 
 # ALLOWED_EXTENSIONS = set(['png', 'jpg', 'JPG', 'PNG', 'bmp'])
 
-
+'''
+@description: 登录页路由
+@param {type} 
+@return: 登录页面
+'''
 @app.route('/')
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -18,12 +29,20 @@ def login():
         redirect('/user')
     return render_template('login.html')
 
-
+'''
+@description: 注册页路由
+@param {type} 
+@return: 注册页面
+'''
 @app.route('/regist')
 def regist():
     return render_template('regist.html')
 
-
+'''
+@description: 提交登录表单
+@param {type} 
+@return: 是否成功登录
+'''
 @app.route('/loginForm', methods=['POST'])
 def loginForm():
     print(request.form['username'])
@@ -46,7 +65,11 @@ def loginForm():
         }
         return json.dumps(result)
 
-
+'''
+@description: 提交注册表单
+@param {type} 
+@return: 是否注册成功
+'''
 @app.route('/registForm', methods=['POST'])
 def registForm():
     # print(request.form)
@@ -75,7 +98,11 @@ def registForm():
         }
     return json.dumps(result)
 
-
+'''
+@description: 提交图片路由
+@param {type} 
+@return: 处理后的结果图片
+'''
 @app.route('/uploadImage', methods=['POST'])
 def uploadimage():
     pic = request.files.get('pic')
@@ -97,36 +124,54 @@ def uploadimage():
 
     return json.dumps(result)
 
-
+'''
+@description: 用户页路由
+@param {type} 
+@return:   用户页
+'''
 @app.route('/user', methods=['GET'])
 def user():
     if session.get('username') is None:
         return redirect('/login')
     return render_template('user.html')
 
+'''
+@description: 注销页路由
+@param {type} 
+@return: 注销页面
+'''    
 @app.route('/logout')
 def logout():
     session.pop('username',None)
     return 'yes'
 
+'''
+@description: 忘记密码页
+@param {type} 
+@return: 忘记密码页面
+'''    
 @app.route('/forgetPass')
 def forgetPass():
     return render_template('forgetPass.html')
 
 
-@app.route('/photos/<string:filename>', methods=['GET'])
-def showPhoto(filename):
-    if(filename is None):
-        pass
-    else:
-        path = os.path.abspath(os.path.dirname(__file__)) + \
-            "/static/photos/"+filename
-        print(path)
-        image_data = open(path)
-        response = make_response(image_data)
-        response.headers['Content-Type'] = 'image/png'
-        return response
+# @app.route('/photos/<string:filename>', methods=['GET'])
+# def showPhoto(filename):
+#     if(filename is None):
+#         pass
+#     else:
+#         path = os.path.abspath(os.path.dirname(__file__)) + \
+#             "/static/photos/"+filename
+#         print(path)
+#         image_data = open(path)
+#         response = make_response(image_data)
+#         response.headers['Content-Type'] = 'image/png'
+#         return response
 
-
+'''
+@description: 主函数
+@param {type} 
+@return: 
+'''
 if __name__ == '__main__':
     app.run()
