@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/css/userStyle.css">
+    <script src="../static/js/jquery-3.4.1.min.js"></script>
+    <script src="../static/js/user.js"></script>
+</head>
+
+<body>
+    <div name="topDiv" class = "topDiv">
+        {{session.username}}
+        <a  onclick="logout()" >注销</a>
+    </div>
+    <div name="mainDiv" class = "mainDiv">
+        <form action="post">
+            <input id = "inputs" type="file" accept="image/png, image/jpeg, image/gif, image/jpg" onchange="showPreview(this, 'source_image')">
+            <input type="button" value="上传" onclick="upload_image()">
+        </form>
+    </div>
+    <div class = "imageDiv">
+        <div name = "source_div" id = "source_div">
+            <img src="" id="source_image" width = "300px">
+        </div>
+        <div name = "result_div" id = "result_div">
+            <img src="" id = "result_image" width = "300px">
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>登录页面</title>
+    <link rel="shortcut icon" href="#" />
+    <link rel="stylesheet" type="text/css" href="../static/css/loginStyle.css" />
+    <script src="../static/js/jquery-3.4.1.min.js"></script>
+    <script src="../static/js/regist.js"></script>
+    <link rel="stylesheet" href="../static/css/registStyle.css">
+</head>
+
+<body>
+    <div id="regist_frame">
+        <div class="regist_logo">
+            <img src="../static/images/loginInfo.png">
+        </div>
+
+        <form method="post" action="">
+            <!-- <p id='p1'><label class="label_input">账号</label><input type="text" id="role_id" class="text_field" /></p> -->
+            <p><label class="label_input">用户名</label><input type="text" id="username" class="text_field" /><p id = "p2"></p></p>
+            <p><label class="label_input">密码</label><input type="password" id="password" class="text_field" /><p id = "p3"></p></p>
+            <p><label class="label_input">检查密码</label><input type="password" id="check_password" class="text_field" /><p id = "p4"></p></p>
+
+            <div id="input_btns">
+                <input type="button" id="btn_reg" value="注册" onclick="regist()">
+                <input type="button" id="btn_login" value="返回登录" onclick="gotoLogin()">
+            </div>
+            
+        </form>
+
+    </div>
+
+</body>
+
+</html>
