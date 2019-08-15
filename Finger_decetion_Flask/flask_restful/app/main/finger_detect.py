@@ -48,7 +48,11 @@ class detect_model():
         img_patch = cv2.resize(img_patch, (0, 0), fx=3, fy=3, interpolation=cv2.INTER_NEAREST)
         return img_patch
 
-    def inference(self, file_path, patch_folder):
+    def inference(self, file_path, patch_folder, top_b=10, bottom_b=30, left_b=0, right_b=0):
+        self.bottom_b = bottom_b
+        self.top_b = top_b
+        self.left_b = left_b
+        self.right_b = right_b
         # 输入的图片数据
         image = Image.open(file_path)
         width, height = image.size

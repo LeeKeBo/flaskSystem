@@ -14,8 +14,8 @@ def load_user(user_id):
 
 
 class Permission:
-    # ...
     UPLOAD = 1
+    # ...
     ADMIN = 16
 
 
@@ -164,12 +164,12 @@ class Picture(db.Model):
     # 反序列化
     @staticmethod
     def from_json(json_pic):
-        # 关靠名字可能没什么用，改
+        # 关靠名字可能没什么用，要改的
         pic_name = json_pic.get('pic_name')
         if pic_name is None or pic_name == '':
             raise ValidationError('dose not have picture name')
         return Picture(pic_name=pic_name)
 
     def __repr__(self):
-        return '<Post %r>' % (self.body)
+        return '<Picture: %r>' % (self.pic_name)
 

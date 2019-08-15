@@ -23,6 +23,7 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField('Confirm password', validators=[DataRequired()])
     submit = SubmitField('Register')
 
+    # 与validate_后的字段名的常规验证一块验证的，这里是email字段的验证
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
             raise ValidationError('Email already registered.')

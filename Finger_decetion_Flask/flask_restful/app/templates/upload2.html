@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}UPLOAD{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>UPLOAD</h1>
+</div>
+<div class="col-md-4">
+    {{ wtf.quick_form(form) }}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<div>
+    {% if result_img %}
+    {{new_filename}}结果子图：
+    <div><img src ="{{ url_for('static', filename=result_img) }}" /></div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -26,8 +26,8 @@ def create_app(config_name):
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')  # 该蓝本下的路由都会附加/auth前缀
 
-    from .api import api as api_blueprint
-    app.register_blueprint(api_blueprint, url_prefix='/api/v1')
+    # from .api import api as api_blueprint
+    # app.register_blueprint(api_blueprint, url_prefix='/api/v1')
 
     return app
 

@@ -43,3 +43,36 @@ def new_post():
     return jsonify(post.to_json()), 201, \
         {'Location': url_for('api.get_post', id=post.id)}
 
+
+
+ALLOWED_EXTENSIONS = set(['png', 'jpg'])
+# 用于判断文件后缀
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+
+# 上传文件
+@main.route('/detection_old/', methods=['GET', 'POST'], strict_slashes=False)
+@login_required
+def detection_old():
+    if request.method == 'GET':
+        return render_template('upload.html')
+    else:
+        file_dir = current_app.config['IMG_DIR']
+        if not os.path.exists(file_dir):
+            os.makedirs(file_dir)
+        f = request.files['img']  # 从表单的file字段获取文件，myfile为该表单的name值
+        # print(f.filename)
+        if f and allowed_file(f.filename):  # 判断是否是允许上传的文件类型
+            fname = secure_filename(f.filename)
+            ext = fname.rsplit('.', 1)[1]  # 获取文件后缀
+            unix_time = int(time.time())
+            new_filename = str(unix_time) + '.' + ext  # 修改了上传的文件名
+            file_path = os.path.join(file_dir, new_filename)
+            f.save(file_path)  # 保存文件到upload目录
+            model = detect_model(model_path=current_app.config['MODEL_PATH'])
+            model.inference(file_path, current_app.config['RESULT_DIR'])
+            result_path = os.path.join('img_result', str(unix_time), '0.jpg')
+            return render_template('upload.html', file_name=new_filename, result_img=result_path)
+        else:
+            return jsonify({"code": 1001, "errmsg": "上传失败"})

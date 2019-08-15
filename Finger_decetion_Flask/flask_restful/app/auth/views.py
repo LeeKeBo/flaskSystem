@@ -32,7 +32,7 @@ def logout():
     return redirect(url_for('main.index'))
 
 
-# 注册
+# register
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
