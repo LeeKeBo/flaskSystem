@@ -40,10 +40,10 @@ class detect_model():
         # print(ymax, xmin, xmax)
         img = cv2.imread(image_path)
         # 防止越界处理
-        y1 = ymax - self.top_b if (ymax - self.top_b)>0 else ymax
-        y2 = ymax + self.bottom_b if (ymax + self.bottom_b)<img.shape[0] else ymax
-        x1 = xmin - self.left_b if (xmin - self.left_b)>0 else xmin
-        x2 = xmax + self.right_b if (xmax + self.right_b)<img.shape[1] else xmax
+        y1 = ymax - self.top_b if (ymax - self.top_b)>0 else 0
+        y2 = ymax + self.bottom_b if (ymax + self.bottom_b)<img.shape[0] else img.shape[0]
+        x1 = xmin - self.left_b if (xmin - self.left_b)>0 else 0
+        x2 = xmax + self.right_b if (xmax + self.right_b)<img.shape[1] else img.shape[1]
         img_patch = img[y1:y2, x1:x2]  # x,y为常见坐标轴, 截取的行对应y, 截取的列对应x
         img_patch = cv2.resize(img_patch, (0, 0), fx=3, fy=3, interpolation=cv2.INTER_NEAREST)
         return img_patch

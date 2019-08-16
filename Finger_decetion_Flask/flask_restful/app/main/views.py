@@ -1,12 +1,11 @@
 from flask import render_template, current_app
 from werkzeug.utils import secure_filename
 from flask_login import login_required, current_user
-from . import main
+from . import main, detection_model
 from .. import db
 from .. models import Picture
 import os
 import time
-from .finger_detect import detect_model
 from .forms import PictureForm
 
 
@@ -35,10 +34,9 @@ def detection():
         db.session.add(picture)
         db.session.commit()
         # 模型检测
-        model = detect_model(model_path=current_app.config['MODEL_PATH'])
-        model.inference(file_path, current_app.config['RESULT_DIR'],
-                        bottom_b=form.Bottom_b.data, top_b=form.Top_b.data,
-                        left_b=form.Left_b.data, right_b=form.Right_b.data)
+        detection_model.inference(file_path, current_app.config['RESULT_DIR'],
+                                  bottom_b=form.Bottom_b.data, top_b=form.Top_b.data,
+                                  left_b=form.Left_b.data, right_b=form.Right_b.data)
         # 以static为根目录的相对路径, 这里只是返回一个子图, 虽然大多情况下都应该只有一个子图
         result_path = os.path.join('img_result', str(unix_time), '0.jpg')
         # print(result_path)
