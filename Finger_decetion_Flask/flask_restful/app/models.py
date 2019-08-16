@@ -37,20 +37,20 @@ class Role(db.Model):
 
     def add_permission(self, perm):
         if not self.has_permission(perm):
-            self.permisssions += perm
+            self.permissions += perm
 
     def remove_permission(self, perm):
         if self.has_permission(perm):
             self.permissions -= perm
 
-    def reset_permission(self, perm):
+    def reset_permission(self, ):
         self.permissions = 0
 
     # 角色    权限
     # 管理员   ...
     # 用户    ...
     @staticmethod
-    def insert_roles(self):
+    def insert_roles():
         roles = {
             'User': [Permission.UPLOAD, ],
             'Administrator': [Permission.UPLOAD, ]
@@ -68,7 +68,7 @@ class Role(db.Model):
         db.session.commit()
 
     def __repr__(self):
-        return '<Role %r>' % (self.name)
+        return '<Role %r>' % (self.permissions)
 
 
 class User(UserMixin, db.Model):
@@ -84,14 +84,15 @@ class User(UserMixin, db.Model):
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         if self.role is None:
-            if self.email == current_app.config['FLASKY_ADMIN']:
-                self.role = Role.query.filter_by(name='Administrator').first()
+            # 有BUG，没能默认管理员
+            # if self.email == current_app.config['FLASKY_ADMIN']:
+            #     self.role = Role.query.filter_by(name='Administrator').first()
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
 
     # 权限控制
     def can(self, perm):
-        return self.role is not None and self.role.hao_permission(perm)
+        return self.role is not None and self.role.has_permission(perm)
 
     def is_administrator(self):
         return self.can(Permission.ADMIN)
@@ -148,7 +149,6 @@ class Picture(db.Model):
     __tablename__ = 'pictures'
     id = db.Column(db.Integer, primary_key=True)
     pic_name = db.Column(db.String(120))
-    pic_id = db.Column(db.Integer)  # 待删除，用来检测数据库迁移
     timestamp = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))  # 表名.id
 

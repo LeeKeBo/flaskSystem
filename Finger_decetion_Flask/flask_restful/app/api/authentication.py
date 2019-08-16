@@ -1,4 +1,3 @@
-from flask_httpauth import HTTPBasicAuth
 from flask import g, jsonify
 from flask_httpauth import HTTPBasicAuth
 from ..models import User
@@ -32,11 +31,11 @@ def auth_error():
     return unauthorized('Invalid credentials')
 
 
-# 蓝本所有路由前需要身份认证
+# 蓝本所有路由前需要身份认证, 这里有待改善？
 @api.before_request
 @auth.login_required
 def before_request():
-    if not g.current_user.is_anonymous and not g.current_user.confirmed:
+    if g.current_user.is_anonymous:
         return forbidden('Unconfirmed account')
 
 

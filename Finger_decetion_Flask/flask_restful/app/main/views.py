@@ -1,4 +1,4 @@
-from flask import render_template, session, g, redirect, url_for, current_app, request, jsonify, flash
+from flask import render_template, current_app
 from werkzeug.utils import secure_filename
 from flask_login import login_required, current_user
 from . import main
@@ -41,7 +41,7 @@ def detection():
                         left_b=form.Left_b.data, right_b=form.Right_b.data)
         # 以static为根目录的相对路径, 这里只是返回一个子图, 虽然大多情况下都应该只有一个子图
         result_path = os.path.join('img_result', str(unix_time), '0.jpg')
-        print(result_path)
+        # print(result_path)
         return render_template('upload2.html', form=form, new_filename=new_filename, result_img=result_path)
     return render_template('upload2.html', form=form)
 
