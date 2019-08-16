@@ -17,27 +17,41 @@ main（提供给浏览器的Web访问的模块）
 在自己的虚拟环境下，安装以下包， 这里用pip安装
 
 模型：
+
 pip install tensorflow
+（当然，这里是没有上传训练的模型的）
 
 FlaskWeb：
+
 pip install flask
+
 pip install wtforms
+
 pip install flask_wtf
+
 pip install flask_sqlalchemy
+
 pip install sqlalchemy
+
 pip install sqlalchemy-migrate
+
 pip install flask_bootstrap
+
 pip install flask_restful
+
 pip install flask_login
+
 pip install Werkzeug
+
 pip install flask_migrate
+
 pip install flask_httpauth
 
 
 #### 使用说明
 
 1. 运行flask_run.py ，即可启动服务器
-2. 可以根据需要先配置好config参数
+2. 可以根据需要先配置好config参数， 由于没有上传模型，所以肯定直接跑跑不动的
 
 #### 参与贡献
 
