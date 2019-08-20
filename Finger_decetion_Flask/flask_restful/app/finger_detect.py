@@ -4,6 +4,8 @@ import numpy as np
 import os
 import cv2
 
+gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.333)
+
 
 class detect_model():
     def __init__(self, model_path, top_b=10, bottom_b=30, left_b=0, right_b=0):
@@ -13,7 +15,7 @@ class detect_model():
         with open(model_path, "rb") as f:
             output_graph_def.ParseFromString(f.read())
             tensors = tf.import_graph_def(output_graph_def, name="")
-        self.__sess = tf.Session()
+        self.__sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options, allow_soft_placement=True))
         self.__sess.run(tf.global_variables_initializer())
         graph = tf.get_default_graph()
         self.__image_tensor = graph.get_tensor_by_name("image_tensor:0")

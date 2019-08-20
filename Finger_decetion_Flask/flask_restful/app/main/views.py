@@ -34,9 +34,12 @@ def detection():
         db.session.add(picture)
         db.session.commit()
         # 模型检测
+        start_time = time.time()
         detection_model.inference(file_path, current_app.config['RESULT_DIR'],
                                   bottom_b=form.Bottom_b.data, top_b=form.Top_b.data,
                                   left_b=form.Left_b.data, right_b=form.Right_b.data)
+        end_time = time.time()
+        print('Execute time:', end_time-start_time)
         # 以static为根目录的相对路径, 这里只是返回一个子图, 虽然大多情况下都应该只有一个子图
         result_path = os.path.join('img_result', str(unix_time), '0.jpg')
         # print(result_path)
